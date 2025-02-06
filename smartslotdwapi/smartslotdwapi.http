@@ -1,0 +1,6 @@
+@smartslotdwapi_HostAddress = http://localhost:5218
+
+GET {{smartslotdwapi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
