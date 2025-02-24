@@ -22,7 +22,7 @@ public class StatusPlayerQueries
                    ,[puntos]
                    ,[coinin]
                    ,[coinout]
-                   ,[jackpot],[fecharegistrodw])
+                   ,[jackpot],[fecharegistrodw],[clienteid],[bill_ini],[bill_fin])
             output inserted.idStatus
              VALUES
                    (@codsala
@@ -36,7 +36,7 @@ public class StatusPlayerQueries
                    ,@puntos
                    ,@coinin
                    ,@coinout
-                   ,@jackpot,getdate())
+                   ,@jackpot,getdate(),@clienteid,@bill_ini,@bill_fin)
             END
 else
 begin

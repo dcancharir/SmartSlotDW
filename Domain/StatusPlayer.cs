@@ -19,5 +19,8 @@ public class StatusPlayer
     public int coinin { get; set; }
     public int coinout { get; set; }
     public int jackpot { get; set; }
+    public int clienteid { get; set; }
+    public int bill_ini { get; set; }
+    public int bill_fin { get; set; }
     public List<StatusMaquinaCupon> statusMaquinaCupon { get; set; } = null!;
 }

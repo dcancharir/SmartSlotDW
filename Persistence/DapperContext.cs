@@ -21,4 +21,7 @@ public class DapperContext {
         connection.Open();
         return connection;
     }
+    public string GetSmartSlotConnection() {
+        return _smartSlotConnection;
+    }
 }

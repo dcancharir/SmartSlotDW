@@ -27,6 +27,17 @@ public class SmartSlotApiJob : IJob {
             _logger.LogInformation("inicio del job");
             var salas = await _mediator.Send(new ListarSalasActivasQuery() { });
             foreach(var sala in salas) {
+                var uri = sala.uri;
+                if (uri == null || uri.Trim().Length == 0)
+                {
+                    _logger.LogError($"No se encontro la uri para la sala : {sala.codsala} - {sala.nombre}");
+                    continue;
+                }
+                if (uri.Trim().EndsWith("/"))
+                {
+                    uri = uri.Trim().Substring(0, uri.Length - 1);
+                    sala.uri = uri;
+                }
                 _logger.LogInformation("Metodo MigrarClientes()");
                 await MigrarClientes(_mediator, _logger, sala);
                 _logger.LogInformation("Metodo MigrarClienteCategoria()");
@@ -50,14 +61,8 @@ public class SmartSlotApiJob : IJob {
     private static async Task<bool> MigrarClientes(IMediator _mediator,ILogger<SmartSlotApiJob> _logger, SalaViewModel sala) {
         bool respuesta = false;
         try {
-            var uri = sala.uri;
-            if (uri == null||uri.Trim().Length == 0) throw new Exception($"No se encontro la uri para la sala : {sala.codsala} - {sala.nombre}");
-            if (uri.Trim().EndsWith("/")) {
-                uri=uri.Trim().Substring(0, uri.Length - 1);
-            }
-            
             var api = new SmartSlotApi<ClienteViewModel>();
-            var clientes = api.GetHttpGet($"{uri}/api/Cliente");
+            var clientes = api.GetHttpGet($"{sala.uri}/api/Cliente");
             var data = await _mediator.Send(new CrearClienteCommand() { registro = clientes, codsala = sala.codsala });
             respuesta = true;
         }
@@ -69,14 +74,8 @@ public class SmartSlotApiJob : IJob {
     private static async Task<bool> MigrarClienteCategoria(IMediator _mediator, ILogger<SmartSlotApiJob> _logger, SalaViewModel sala) {
         bool respuesta = false;
         try {
-            var uri = sala.uri;
-            if (uri == null || uri.Trim().Length == 0) throw new Exception($"No se encontro la uri para la sala : {sala.codsala} - {sala.nombre}");
-            if (uri.Trim().EndsWith("/")) {
-                uri = uri.Trim().Substring(0, uri.Length - 1);
-            }
-
             var api = new SmartSlotApi<ClienteCategoriaViewModel>();
-            var apiresult = api.GetHttpGet($"{uri}/api/ClienteCategoria");
+            var apiresult = api.GetHttpGet($"{sala.uri}/api/ClienteCategoria");
             var data = await _mediator.Send(new CrearClienteCategoriaCommand() { registro = apiresult, codsala = sala.codsala });
             respuesta = true;
         }
@@ -88,14 +87,8 @@ public class SmartSlotApiJob : IJob {
     private static async Task<bool> MigrarClienteCupon(IMediator _mediator, ILogger<SmartSlotApiJob> _logger, SalaViewModel sala) {
         bool respuesta = false;
         try {
-            var uri = sala.uri;
-            if (uri == null || uri.Trim().Length == 0) throw new Exception($"No se encontro la uri para la sala : {sala.codsala} - {sala.nombre}");
-            if (uri.Trim().EndsWith("/")) {
-                uri = uri.Trim().Substring(0, uri.Length - 1);
-            }
-
             var api = new SmartSlotApi<ClienteCuponViewModel>();
-            var apiresult = api.GetHttpGet($"{uri}/api/ClienteCupon");
+            var apiresult = api.GetHttpGet($"{sala.uri}/api/ClienteCupon");
             var data = await _mediator.Send(new CrearClienteCuponCommand() { registro = apiresult, codsala = sala.codsala });
             respuesta = true;
         }
@@ -107,14 +100,8 @@ public class SmartSlotApiJob : IJob {
     private static async Task<bool> MigrarClientePromocion(IMediator _mediator, ILogger<SmartSlotApiJob> _logger, SalaViewModel sala) {
         bool respuesta = false;
         try {
-            var uri = sala.uri;
-            if (uri == null || uri.Trim().Length == 0) throw new Exception($"No se encontro la uri para la sala : {sala.codsala} - {sala.nombre}");
-            if (uri.Trim().EndsWith("/")) {
-                uri = uri.Trim().Substring(0, uri.Length - 1);
-            }
-
             var api = new SmartSlotApi<ClientePromocionViewModel>();
-            var apiresult = api.GetHttpGet($"{uri}/api/ClientePromocion");
+            var apiresult = api.GetHttpGet($"{sala.uri}/api/ClientePromocion");
             var data = await _mediator.Send(new CrearClientePromocionCommand() { registro = apiresult, codsala = sala.codsala });
             respuesta = true;
         }
@@ -128,18 +115,11 @@ public class SmartSlotApiJob : IJob {
         bool respuesta = false;
         try
         {
-            var uri = sala.uri;
-            if (uri == null || uri.Trim().Length == 0) throw new Exception($"No se encontro la uri para la sala : {sala.codsala} - {sala.nombre}");
-            if (uri.Trim().EndsWith("/"))
-            {
-                uri = uri.Trim().Substring(0, uri.Length - 1);
-            }
-
             var api = new SmartSlotApi<AfluenciaHoraViewModel>();
             var fechaActual = DateTime.Now.AddDays(-1);
             var fechaIni = fechaActual.ToString("yyyy-MM-dd 00:00:00");
             var fechafin = fechaActual.ToString("yyyy-MM-dd 23:59:59");
-            var apiresult = api.GetHttpGet($"{uri}/api/AfluenciaHora/{fechaIni}/{fechafin}");
+            var apiresult = api.GetHttpGet($"{sala.uri}/api/AfluenciaHora/{fechaIni}/{fechafin}");
             var data = await _mediator.Send(new CrearAfluenciaHoraCommand() { registro = apiresult, codsala = sala.codsala });
             respuesta = true;
         }
@@ -154,15 +134,8 @@ public class SmartSlotApiJob : IJob {
         bool respuesta = false;
         try
         {
-            var uri = sala.uri;
-            if (uri == null || uri.Trim().Length == 0) throw new Exception($"No se encontro la uri para la sala : {sala.codsala} - {sala.nombre}");
-            if (uri.Trim().EndsWith("/"))
-            {
-                uri = uri.Trim().Substring(0, uri.Length - 1);
-            }
-
             var api = new SmartSlotApi<StatusPlayerViewModel>();
-            var apiresult = api.GetHttpGet($"{uri}/api/StatusPlayer");
+            var apiresult = api.GetHttpGet($"{sala.uri}/api/StatusPlayer");
             var data = await _mediator.Send(new StatusPlayerCommand() { registro = apiresult, codsala = sala.codsala });
             respuesta = true;
         }
@@ -177,15 +150,8 @@ public class SmartSlotApiJob : IJob {
         bool respuesta = false;
         try
         {
-            var uri = sala.uri;
-            if (uri == null || uri.Trim().Length == 0) throw new Exception($"No se encontro la uri para la sala : {sala.codsala} - {sala.nombre}");
-            if (uri.Trim().EndsWith("/"))
-            {
-                uri = uri.Trim().Substring(0, uri.Length - 1);
-            }
-
             var api = new SmartSlotApi<PromocionViewModel>();
-            var apiresult = api.GetHttpGet($"{uri}/api/StatusPlayer");
+            var apiresult = api.GetHttpGet($"{sala.uri}/api/StatusPlayer");
             var data = await _mediator.Send(new PromocionCommand() { registro = apiresult, codsala = sala.codsala });
             respuesta = true;
         }
@@ -200,15 +166,8 @@ public class SmartSlotApiJob : IJob {
         bool respuesta = false;
         try
         {
-            var uri = sala.uri;
-            if (uri == null || uri.Trim().Length == 0) throw new Exception($"No se encontro la uri para la sala : {sala.codsala} - {sala.nombre}");
-            if (uri.Trim().EndsWith("/"))
-            {
-                uri = uri.Trim().Substring(0, uri.Length - 1);
-            }
-
             var api = new SmartSlotApi<SegmentacionClienteViewModel>();
-            var apiresult = api.GetHttpGet($"{uri}/api/SegmentacionCliente");
+            var apiresult = api.GetHttpGet($"{sala.uri}/api/SegmentacionCliente");
             var data = await _mediator.Send(new SegmentacionClienteCommand() { registro = apiresult, codsala = sala.codsala });
             respuesta = true;
         }
