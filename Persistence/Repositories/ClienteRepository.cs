@@ -28,4 +28,17 @@ public class ClienteRepository : IClienteRepository{
         }
         return result;
     }
+    public async Task<IEnumerable<Cliente>> GetAllClientByCodSala(int codsala) {
+        var db = _context.CreateSmartSlotConnection();
+        IEnumerable<Cliente> result;
+        try {
+            result = await db.QueryAsync<Cliente>(ClienteQueries.GetAllByCodSala,new { codsala = codsala});
+        } catch(Exception ex) {
+            Console.WriteLine($"Error fetching records from db: ${ex.Message}");
+            throw new Exception("Unable to fetch data. Please contact the administrator.");
+        } finally {
+            db.Close();
+        }
+        return result;
+    }
 }

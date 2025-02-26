@@ -17,4 +17,5 @@ public class Cliente {
     public DateTime fechaNacimiento { get; set; }
     public string? correo { get; set; }
     public string? celular { get; set; }
+    public int segmentacionid {  get; set; }
 }

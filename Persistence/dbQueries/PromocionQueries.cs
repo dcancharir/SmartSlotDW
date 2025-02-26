@@ -12,16 +12,16 @@ public class PromocionQueries
             BEGIN
      INSERT INTO [dbo].[Promocion]
            ([codsala]
-           ,[id]
-           ,[nombre]
+           ,[id],[tipoPromocion]
+           ,[nombre],[excluyente]
            ,[fechaVigenciainicial]
            ,[fechaVigenciaFinal]
            ,[estado]
            ,[fecharegistrodw])
      VALUES
            (@codsala
-           ,@id
-           ,@nombre
+           ,@id,@tipoPromocion
+           ,@nombre,@excluyente
            ,@fechaVigenciainicial
            ,@fechaVigenciaFinal
            ,@estado

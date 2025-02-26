@@ -51,7 +51,7 @@ public static class ClienteQueries {
                            ,[fechaNacimiento]
                            ,[correo]
                            ,[celular]
-                           ,[fecharegistrodw])
+                           ,[fecharegistrodw],[segmentacionid])
                      VALUES
                            (@id
                            ,@codsala
@@ -64,7 +64,23 @@ public static class ClienteQueries {
                            ,@fechaNacimiento
                            ,@correo
                            ,@celular
-                           ,getdate())
+                           ,getdate(),@segmentacionid)
             END
 ";
+    public static string GetAllByCodSala => $@"
+        SELECT [id]
+          ,[codsala]
+          ,[tipoDocumento]
+          ,[documento]
+          ,[categoriaCliente]
+          ,[nombre]
+          ,[apellidoPaterno]
+          ,[apellidoMaterno]
+          ,[fechaNacimiento]
+          ,[correo]
+          ,[celular]
+          ,[fecharegistrodw]
+          ,[segmentacionid]
+      FROM [dbo].[Cliente] where codsala = @codsala
+    ";
 }

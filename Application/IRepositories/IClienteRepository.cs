@@ -8,4 +8,5 @@ using System.Threading.Tasks;
 namespace Application.IRepositories;
 public interface IClienteRepository : IGenericCommandRepository<Cliente>,IGenericQueriesRepository<Cliente> {
     Task<bool> CreateClient(Cliente registro);
+    Task<IEnumerable<Cliente>> GetAllClientByCodSala(int codsala);
 }

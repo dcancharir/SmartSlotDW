@@ -8,7 +8,9 @@ namespace Application.ViewModels;
 public class PromocionViewModel
 {
     public int id { get; set; }
+    public string? tipoPromocion { get; set; }
     public string? nombre { get; set; }
+    public bool excluyente { get; set; }
     public DateTime fechaVigenciainicial { get; set; }
     public DateTime fechaVigenciaFinal { get; set; }
     public int estado { get; set; }

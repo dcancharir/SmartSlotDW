@@ -8,6 +8,9 @@ namespace Application.ViewModels;
 public class ClienteCuponViewModel {
     public int id { get; set; }
     public int clienteid { get; set; }
-    public int sorteoid { get; set; }
-    public int cupones { get; set; }
+    public string? cliente {  get; set; }
+    //public int sorteoid { get; set; }
+    //public int cupones { get; set; }
+    //public int cuponescortesia { get; set; }
+    public List<DetalleCuponesViewModel> detallecupones { get; set; } = new List<DetalleCuponesViewModel>();
 }

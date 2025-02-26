@@ -17,4 +17,5 @@ public interface IUnitOfWork
     IStatusMaquinaCuponRepository _statusMaquinaCuponRepository { get; }
     IPromocionRepository _promocionRepository{ get; }
     ISegmentacionClienteRepository _segmentacionClienteRepository { get; }
+    ISorteoRepository _sorteoRepository { get; }
 }

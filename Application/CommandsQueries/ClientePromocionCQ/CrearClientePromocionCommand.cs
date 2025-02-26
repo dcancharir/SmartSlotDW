@@ -1,15 +1,9 @@
-﻿using Application.CommandsQueries.ClienteCQ;
+﻿using Application.Extensions;
 using Application.IRepositories;
 using Application.ViewModels;
 using AutoMapper;
 using Domain;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Application.CommandsQueries.ClientePromocionCQ;
 public class CrearClientePromocionCommand : IRequest<bool> {
     public List<ClientePromocionViewModel> registro { get; set; }
@@ -27,7 +21,7 @@ public class CrearClientePromocionCommand : IRequest<bool> {
                 return response;
             }
             try {
-                List<ClientePromocion> result = _mapper.Map<List<ClientePromocion>>(request.registro);
+                List<ClientePromocion> result = request.registro.ToClientePromocionList(_mapper);
                 foreach (var item in result) {
                     item.codsala = request.codsala;
                     await _unitOfWork._clientePromocionRepository.CreateClientPromocion(item);

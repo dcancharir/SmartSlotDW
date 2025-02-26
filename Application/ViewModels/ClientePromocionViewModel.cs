@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 namespace Application.ViewModels;
 public class ClientePromocionViewModel {
     public int id { get; set; }
-    public int promocionsalaid { get; set; }
-    public int clienteid { get; set; }
-    public int tipoPremio { get; set; }
-    public int categoriaPremio { get; set; }
-    public int premio { get; set; }
-    public string? tipoPremioStr { get; set; }
-    public string? categoriaPremioStr { get; set; }
+    public string? cliente { get; set; }
+    public string? tipodocumento { get; set; }
+    public string? dni {  get; set; }
+    public string? categoria { get; set; }
+    public List<PromocionesGanadasViewModel> promocionesganadas { get; set; } = new List<PromocionesGanadasViewModel>();
 }

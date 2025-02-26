@@ -1,4 +1,5 @@
 ﻿using Application.CommandsQueries.ClienteCategoriaCQ;
+using Application.Extensions;
 using Application.IRepositories;
 using Application.ViewModels;
 using AutoMapper;
@@ -27,7 +28,7 @@ public class CrearClienteCuponCommand : IRequest<bool> {
                 return response;
             }
             try {
-                List<ClienteCupon> clientes = _mapper.Map<List<ClienteCupon>>(request.registro);
+                List<ClienteCupon> clientes = request.registro.ToClienteCuponList(_mapper);
                 foreach (var item in clientes) {
                     item.codsala = request.codsala;
                     await _unitOfWork._clienteCuponRepository.CreateClientCupon(item);

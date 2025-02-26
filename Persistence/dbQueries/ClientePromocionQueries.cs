@@ -1,35 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Persistence.dbQueries;
+﻿namespace Persistence.dbQueries;
 public class ClientePromocionQueries {
     public static string Create => @"
-        IF NOT EXISTS (SELECT 1 FROM ClientePromocion WHERE id = @id and codsala = @codsala)
+        IF NOT EXISTS (SELECT 1 FROM ClientePromocion WHERE promocionid = @promocionid and codsala = @codsala and clienteid = @clienteid)
         BEGIN
 INSERT INTO [dbo].[ClientePromocion]
            ([codsala]
-           ,[id]
-           ,[promocionsalaid]
            ,[clienteid]
-           ,[tipoPremio]
-           ,[categoriaPremio]
+           ,[promocionid]
+           ,[cliente]
+           ,[tipodocumento]
+           ,[dni]
+           ,[categoria]
+           ,[promocion]
+           ,[tipopromocion]
+           ,[fechagenerado]
+           ,[fechacanje]
+           ,[premioGanado]
            ,[premio]
-           ,[tipoPremioStr]
-           ,[categoriaPremioStr]
+           ,[estado]
            ,[fecharegistrodw])
      VALUES
            (@codsala
-           ,@id
-           ,@promocionsalaid
            ,@clienteid
-           ,@tipoPremio
-           ,@categoriaPremio
+           ,@promocionid
+           ,@cliente
+           ,@tipodocumento
+           ,@dni
+           ,@categoria
+           ,@promocion
+           ,@tipopromocion
+           ,@fechagenerado
+           ,@fechacanje
+           ,@premioGanado
            ,@premio
-           ,@tipoPremioStr
-           ,@categoriaPremioStr
+           ,@estado
            ,getdate())
         END
 ";
