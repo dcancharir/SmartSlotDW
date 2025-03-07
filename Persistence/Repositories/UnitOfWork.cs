@@ -18,7 +18,9 @@ public class UnitOfWork : IUnitOfWork {
         IStatusMaquinaCuponRepository statusMaquinaCuponRepository,
         IPromocionRepository promocionRepository,
         ISegmentacionClienteRepository segmentacionClienteRepository,
-        ISorteoRepository sorteoRepository)
+        ISorteoRepository sorteoRepository,
+        IClientePuntoRepository clientePuntoRepository,
+        IClientePuntoFechasRepository clientePuntoFechasRepository)
     {
         _clienteRepository = clienteRepository;
         _salaRepository = salaRepository;
@@ -31,6 +33,8 @@ public class UnitOfWork : IUnitOfWork {
         _promocionRepository = promocionRepository;
         _segmentacionClienteRepository = segmentacionClienteRepository;
         _sorteoRepository = sorteoRepository;
+        _clientePuntoRepository = clientePuntoRepository;
+        _clientePuntoFechasRepository = clientePuntoFechasRepository;
     }
     public IClienteRepository _clienteRepository { get; }
     public ISalaRepository _salaRepository { get; }
@@ -43,4 +47,7 @@ public class UnitOfWork : IUnitOfWork {
     public IPromocionRepository _promocionRepository { get; }
     public ISegmentacionClienteRepository _segmentacionClienteRepository { get; }
     public ISorteoRepository _sorteoRepository { get; }
+
+    public IClientePuntoRepository _clientePuntoRepository { get; }
+    public IClientePuntoFechasRepository _clientePuntoFechasRepository { get; }
 }

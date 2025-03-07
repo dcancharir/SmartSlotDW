@@ -2,8 +2,12 @@
 using Dapper;
 using Domain;
 using Persistence.dbQueries;
+using Persistence.Extensions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,5 +44,50 @@ public class ClienteRepository : IClienteRepository{
             db.Close();
         }
         return result;
+    }
+    public async Task<bool> BulkCreateClient(List<Cliente> lista) {
+        bool result = false;
+        try {
+            using(var connection = new SqlConnection(_context.GetSmartSlotConnection())) {
+                await connection.OpenAsync();
+
+                // Convierte la lista a un DataTable
+                var dataTable = lista.ToDataTable();
+
+                // Llamada asincrónica para realizar el Bulk Insert
+                await BulkInsertAsync(connection, dataTable);
+                result = true;
+            }
+        } catch(Exception ex) {
+            Console.WriteLine($"Error fetching records from db: ${ex.Message}");
+            throw new Exception("Unable to fetch data. Please contact the administrator.");
+        } finally {
+
+        }
+        return result;
+    }
+    private static async Task BulkInsertAsync(SqlConnection connection, DataTable dataTable) {
+        using(var bulkCopy = new SqlBulkCopy(connection)) {
+            bulkCopy.DestinationTableName = "Cliente";  // Nombre de la tabla destino en la base de datos
+            // Add explicit column mappings to ensure correct data type conversion
+            bulkCopy.ColumnMappings.Add("id", "id");
+            bulkCopy.ColumnMappings.Add("codsala", "codsala");
+            bulkCopy.ColumnMappings.Add("tipoDocumento", "tipoDocumento");
+            bulkCopy.ColumnMappings.Add("documento", "documento");
+            bulkCopy.ColumnMappings.Add("categoriacliente", "categoriacliente");
+            bulkCopy.ColumnMappings.Add("categoriaIdCliente", "categoriaIdCliente");
+            bulkCopy.ColumnMappings.Add("nombre", "nombre");
+            bulkCopy.ColumnMappings.Add("apellidoPaterno", "apellidoPaterno");
+            bulkCopy.ColumnMappings.Add("apellidoMaterno", "apellidoMaterno");
+            bulkCopy.ColumnMappings.Add("fechaNacimiento", "fechaNacimiento");
+            bulkCopy.ColumnMappings.Add("correo", "correo");
+            bulkCopy.ColumnMappings.Add("celular", "celular");
+            bulkCopy.ColumnMappings.Add("fecharegistrodw", "fecharegistrodw");
+            bulkCopy.ColumnMappings.Add("segmentacionid", "segmentacionid");
+            // Asignar un Task para manejar el proceso asincrónicamente
+            await Task.Run(() => {
+                bulkCopy.WriteToServer(dataTable);  // Inserta los datos de forma masiva
+            });
+        }
     }
 }

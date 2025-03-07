@@ -26,5 +26,7 @@ public static class DependencyInjection {
         services.AddScoped<IPromocionRepository, PromocionRepository>();
         services.AddScoped<ISegmentacionClienteRepository, SegmentacionClienteRepository>();
         services.AddScoped<ISorteoRepository, SorteoRepository>();
+        services.AddScoped<IClientePuntoRepository, ClientePuntoRepository>();
+        services.AddScoped<IClientePuntoFechasRepository, ClientePuntoFechasRepository>();
     }
 }

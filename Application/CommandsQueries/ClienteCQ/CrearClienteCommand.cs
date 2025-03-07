@@ -27,12 +27,21 @@ public class CrearClienteCommand : IRequest<bool> {
                 return response;
             }
             try {
+                var fechaActual = DateTime.Now;
+                var clientesDb = await _unitOfWork._clienteRepository.GetAllClientByCodSala(request.codsala);
                 List<Cliente> clientes = _mapper.Map<List<Cliente>>(request.registro);
-                foreach (var item in clientes) {
-                    item.codsala = request.codsala;
-                    await _unitOfWork._clienteRepository.CreateClient(item);
-                }
-                return true;
+
+                var clientesInsertar = clientes.Where(c2 => !clientesDb.Any(c1 => c1.id == c2.id)).ToList();
+                clientesInsertar.ForEach(x => { 
+                    x.codsala = request.codsala;
+                    x.fecharegistrodw = fechaActual;
+                });
+                response = await _unitOfWork._clienteRepository.BulkCreateClient(clientesInsertar);
+                //foreach (var item in clientesInsertar) {
+                //    item.codsala = request.codsala;
+                //    await _unitOfWork._clienteRepository.CreateClient(item);
+                //}
+                return response;
             } catch(Exception) {
                 return false;
             }

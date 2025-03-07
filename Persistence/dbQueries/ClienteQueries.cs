@@ -44,7 +44,7 @@ public static class ClienteQueries {
                            ,[codsala]
                            ,[tipoDocumento]
                            ,[documento]
-                           ,[categoriaCliente]
+                           ,[categoriaIdCliente]
                            ,[nombre]
                            ,[apellidoPaterno]
                            ,[apellidoMaterno]
@@ -57,7 +57,7 @@ public static class ClienteQueries {
                            ,@codsala
                            ,@tipoDocumento
                            ,@documento
-                           ,@categoriaCliente
+                           ,@categoriaIdCliente
                            ,@nombre
                            ,@apellidoPaterno
                            ,@apellidoMaterno
@@ -72,7 +72,7 @@ public static class ClienteQueries {
           ,[codsala]
           ,[tipoDocumento]
           ,[documento]
-          ,[categoriaCliente]
+          ,[categoriaIdCliente]
           ,[nombre]
           ,[apellidoPaterno]
           ,[apellidoMaterno]

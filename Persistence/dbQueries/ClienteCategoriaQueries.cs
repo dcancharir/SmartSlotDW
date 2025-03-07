@@ -13,12 +13,12 @@ INSERT INTO [dbo].[ClienteCategoria]
            ([codsala]
            ,[id]
            ,[nombre]
-           ,[estado],[fecharegistrodw])
+           ,[estado],[fecharegistrodw],[puntos])
      VALUES
            (@codsala
            ,@id
            ,@nombre
-           ,@estado,getdate())
+           ,@estado,getdate(),@puntos)
         END
 ";
 }

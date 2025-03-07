@@ -10,7 +10,7 @@ public class Cliente {
     public int id { get; set; }
     public string? tipoDocumento { get; set; }
     public string? documento { get; set; }
-    public string? categoriacliente { get; set; }
+    public int categoriaIdCliente { get; set; }
     public string? nombre { get; set; }
     public string? apellidoPaterno { get; set; }
     public string? apellidoMaterno { get; set; }
@@ -18,4 +18,6 @@ public class Cliente {
     public string? correo { get; set; }
     public string? celular { get; set; }
     public int segmentacionid {  get; set; }
+    public DateTime fecharegistrodw {  get; set; }
+    public string? categoriacliente { get; set; }
 }

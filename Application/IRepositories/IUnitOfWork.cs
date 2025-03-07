@@ -18,4 +18,6 @@ public interface IUnitOfWork
     IPromocionRepository _promocionRepository{ get; }
     ISegmentacionClienteRepository _segmentacionClienteRepository { get; }
     ISorteoRepository _sorteoRepository { get; }
+    IClientePuntoRepository _clientePuntoRepository { get; }
+    IClientePuntoFechasRepository _clientePuntoFechasRepository {  get; }
 }
