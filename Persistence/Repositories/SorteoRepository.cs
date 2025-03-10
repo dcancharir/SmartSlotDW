@@ -28,4 +28,17 @@ public class SorteoRepository : ISorteoRepository{
         }
         return result;
     }
+    public async Task<IEnumerable<Sorteo>> GetAllSorteoByCodSala(int codsala) {
+        var db = _context.CreateSmartSlotConnection();
+        IEnumerable<Sorteo> result;
+        try {
+            result = await db.QueryAsync<Sorteo>(SorteoQueries.GetAllByCodSala, new { codsala = codsala });
+        } catch(Exception ex) {
+            Console.WriteLine($"Error fetching records from db: ${ex.Message}");
+            throw new Exception("Unable to fetch data. Please contact the administrator.");
+        } finally {
+            db.Close();
+        }
+        return result;
+    }
 }

@@ -20,7 +20,11 @@ public class UnitOfWork : IUnitOfWork {
         ISegmentacionClienteRepository segmentacionClienteRepository,
         ISorteoRepository sorteoRepository,
         IClientePuntoRepository clientePuntoRepository,
-        IClientePuntoFechasRepository clientePuntoFechasRepository)
+        IClientePuntoFechasRepository clientePuntoFechasRepository,
+        IHistorialCuponRepository historialCuponRepository,
+        IClienteJugadaRepository clienteJugadaRepository,
+        ISorteoConfiguracionRepository sorteoConfiguracionRepository,
+        IMaquinasConfiguracionRepository maquinasConfiguracionRepository)
     {
         _clienteRepository = clienteRepository;
         _salaRepository = salaRepository;
@@ -35,6 +39,10 @@ public class UnitOfWork : IUnitOfWork {
         _sorteoRepository = sorteoRepository;
         _clientePuntoRepository = clientePuntoRepository;
         _clientePuntoFechasRepository = clientePuntoFechasRepository;
+        _historialCuponRepository = historialCuponRepository;
+        _clienteJugadaRepository = clienteJugadaRepository;
+        _sorteoConfiguracionRepository = sorteoConfiguracionRepository;
+        _maquinasConfiguracionRepository = maquinasConfiguracionRepository;
     }
     public IClienteRepository _clienteRepository { get; }
     public ISalaRepository _salaRepository { get; }
@@ -47,7 +55,13 @@ public class UnitOfWork : IUnitOfWork {
     public IPromocionRepository _promocionRepository { get; }
     public ISegmentacionClienteRepository _segmentacionClienteRepository { get; }
     public ISorteoRepository _sorteoRepository { get; }
-
     public IClientePuntoRepository _clientePuntoRepository { get; }
     public IClientePuntoFechasRepository _clientePuntoFechasRepository { get; }
+    public IHistorialCuponRepository _historialCuponRepository { get; }
+
+    public IClienteJugadaRepository _clienteJugadaRepository { get; }
+
+    public ISorteoConfiguracionRepository _sorteoConfiguracionRepository { get; }
+
+    public IMaquinasConfiguracionRepository _maquinasConfiguracionRepository { get; }
 }

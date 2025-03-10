@@ -5,24 +5,33 @@ public class SorteoQueries {
             BEGIN
              INSERT INTO [dbo].[Sorteo]
                    ([codsala]
-                   ,[id]
+                   ,[id],[nombre]
                    ,[descripcion]
                    ,[fechaInicioSorteo]
                    ,[fechaFinSorteo]
-                   ,[sorteovirtual]
                    ,[estado]
                    ,[tipo]
                    ,[fecharegistrodw])
              VALUES
                    (@codsala
-                   ,@id
+                   ,@id,@nombre
                    ,@descripcion
                    ,@fechaInicioSorteo
                    ,@fechaFinSorteo
-                   ,@sorteovirtual
                    ,@estado
                    ,@tipo
                    ,getdate())
             END
+";  
+    public static string GetAllByCodSala => @"
+           SELECT [codsala]
+                  ,[id],[nombre]
+                  ,[descripcion]
+                  ,[fechaInicioSorteo]
+                  ,[fechaFinSorteo]
+                  ,[estado]
+                  ,[tipo]
+                  ,[fecharegistrodw]
+              FROM [dbo].[Sorteo] where codsala = @codsala
 ";
 }

@@ -15,6 +15,7 @@ using Application.CommandsQueries.SegmentacionClienteCQ;
 using Application.CommandsQueries.SorteoCQ;
 using Application.CommandsQueries.ClientePuntoCQ;
 using Application.CommandsQueries.ClientePuntoFechasCQ;
+using Application.CommandsQueries.HistorialCuponCQ;
 namespace smartslotdwapi.Jobs;
 
 public class SmartSlotApiJob : IJob {
@@ -43,26 +44,31 @@ public class SmartSlotApiJob : IJob {
                 }
                 _logger.LogInformation("Metodo MigrarClientes()");
                 await MigrarClientes(_mediator, _logger, sala);
-                _logger.LogInformation("Metodo MigrarClienteCategoria()");
-                await MigrarClienteCategoria(_mediator, _logger, sala);
-                _logger.LogInformation("Metodo MigrarClienteCupon()");
-                await MigrarClienteCupon(_mediator, _logger, sala);
-                _logger.LogInformation("Metodo MigrarClientePromocion()");
-                await MigrarClientePromocion(_mediator, _logger, sala);
-                _logger.LogInformation($"Metodo MigrarAfluenciaHora()");
-                await MigrarAfluenciaHora(_mediator, _logger, sala);
-                _logger.LogInformation($"Metodo MigrarStatusPlayer()");
-                await MigrarStatusPlayer(_mediator, _logger, sala);
-                _logger.LogInformation($"Metodo MigrarPromocion()");
-                await MigrarPromocion(_mediator, _logger, sala);
-                _logger.LogInformation($"Metodo MigrarSegmentacionCliente()");
-                await MigrarSegmentacionCliente(_mediator, _logger, sala);
+                _logger.LogInformation("Obteniendo lista de clientes");
+                var clientes = await _mediator.Send(new ListarClientesQuery() { codsala = sala.codsala });
+
+                //_logger.LogInformation("Metodo MigrarClienteCategoria()");
+                //await MigrarClienteCategoria(_mediator, _logger, sala);
+                //_logger.LogInformation("Metodo MigrarClienteCupon()");
+                //await MigrarClienteCupon(_mediator, _logger, sala);
+                //_logger.LogInformation("Metodo MigrarClientePromocion()");
+                //await MigrarClientePromocion(_mediator, _logger, sala);
+                //_logger.LogInformation($"Metodo MigrarAfluenciaHora()");
+                //await MigrarAfluenciaHora(_mediator, _logger, sala);
+                //_logger.LogInformation($"Metodo MigrarStatusPlayer()");
+                //await MigrarStatusPlayer(_mediator, _logger, sala);
+                //_logger.LogInformation($"Metodo MigrarPromocion()");
+                //await MigrarPromocion(_mediator, _logger, sala);
+                //_logger.LogInformation($"Metodo MigrarSegmentacionCliente()");
+                //await MigrarSegmentacionCliente(_mediator, _logger, sala);
                 _logger.LogInformation($"Metodo MigrarSorteo()");
                 await MigrarSorteo(_mediator, _logger, sala);
-                _logger.LogInformation($"Metodo MigrarClientePunto");
-                await MigrarClientePunto(_mediator, _logger, sala);
-                _logger.LogInformation($"Metodo MigrarClientePuntoFechas");
-                await MigrarClientePuntoFechas(_mediator, _logger, sala);
+                //_logger.LogInformation($"Metodo MigrarClientePunto");
+                //await MigrarClientePunto(_mediator, _logger, sala);
+                //_logger.LogInformation($"Metodo MigrarClientePuntoFechas");
+                //await MigrarClientePuntoFechas(_mediator, _logger, sala);
+                //_logger.LogInformation($"Metodo MigrarHistorialCupon");
+                //await MigrarHistorialCupon(_mediator, _logger, sala,clientes);
             }
             _logger.LogInformation("Job Finalizado");
         }
@@ -194,8 +200,8 @@ public class SmartSlotApiJob : IJob {
         bool respuesta = false;
         try {
             var api = new SmartSlotApi<SorteoViewModel>();
-            var apiresult = api.GetHttpGet($"{sala.uri}/api/SorteoCliente");
-            var data = await _mediator.Send(new SorteoCommand() { registro = apiresult, codsala = sala.codsala });
+            var apiresult = api.GetHttpGet($"{sala.uri}/api/Sorteo");
+            var data = await _mediator.Send(new CrearSorteoCommand() { registro = apiresult, codsala = sala.codsala });
             respuesta = true;
         } catch(Exception ex) {
             _logger.LogError($"Error metodo MigrarSorteo() - {ex.Message}");
@@ -228,12 +234,61 @@ public class SmartSlotApiJob : IJob {
                 var fechaActual = DateTime.Now.AddDays(-1);
                 var fechaIni = fechaActual.ToString("yyyy-MM-dd");
                 var fechafin = fechaActual.ToString("yyyy-MM-dd");
-                var apiresult = api.GetHttpGet($"{sala.uri}/api/ClientePunto/clientefechas/${item.id}/{fechaIni}/{fechafin}");
+                var apiresult = api.GetHttpGet($"{sala.uri}/api/ClientePunto/clientefechas/{item.id}/{fechaIni}/{fechafin}");
                 var data = await _mediator.Send(new CrearClientePuntoFechasCommand() { registro = apiresult, codsala = sala.codsala });
             }
             respuesta = true;
         } catch(Exception ex) {
             _logger.LogError($"Error metodo MigrarClientePuntoFechas() - {ex.Message}");
+        }
+        return respuesta;
+    }
+    private static async Task<bool> MigrarHistorialCupon(
+        IMediator _mediator, 
+        ILogger<SmartSlotApiJob> _logger, 
+        SalaViewModel sala,
+        IEnumerable<ClienteViewModel> clientes
+        ) {
+        bool respuesta = false;
+        try {
+            //var clientes = await _mediator.Send(new ListarClientesQuery() { codsala = sala.codsala });
+            var fechaActual = DateTime.Now;
+            var fechaOperacion = fechaActual.AddDays(-1);
+            var fechaIni = fechaOperacion.ToString("yyyy-MM-dd");
+            var fechafin = fechaActual.ToString("yyyy-MM-dd");
+            await _mediator.Send(new RemoveHistorialCuponCommand() { codsala = sala.codsala, fechaOperacion = fechaOperacion });
+            foreach(var item in clientes) {
+                var api = new SmartSlotApi<HistorialCuponViewModel>();
+                var apiresult = api.GetHttpGet($"{sala.uri}/api/ClienteCupon/historialcupon/{item.id}/{fechaIni}/{fechafin}");
+                var data = await _mediator.Send(new CrearHistorialCuponCommand() { registro = apiresult, codsala = sala.codsala , fechaOperacion = fechaOperacion });
+            }
+            respuesta = true;
+        } catch(Exception ex) {
+            _logger.LogError($"Error metodo MigrarHistorialCupon() - {ex.Message}");
+        }
+        return respuesta;
+    }
+    private static async Task<bool> MigrarClienteJugada(
+       IMediator _mediator,
+       ILogger<SmartSlotApiJob> _logger,
+       SalaViewModel sala,
+       IEnumerable<ClienteViewModel> clientes
+       ) {
+        bool respuesta = false;
+        try {
+            var fechaActual = DateTime.Now;
+            var fechaOperacion = fechaActual.AddDays(-1);
+            var fechaIni = fechaOperacion.ToString("yyyy-MM-dd");
+            var fechafin = fechaActual.ToString("yyyy-MM-dd");
+            await _mediator.Send(new RemoveHistorialCuponCommand() { codsala = sala.codsala, fechaOperacion = fechaOperacion });
+            foreach(var item in clientes) {
+                var api = new SmartSlotApi<HistorialCuponViewModel>();
+                var apiresult = api.GetHttpGet($"{sala.uri}/api/ClienteJugada/Top/{item.id}/{fechaIni}/{fechafin}");
+                var data = await _mediator.Send(new CrearHistorialCuponCommand() { registro = apiresult, codsala = sala.codsala, fechaOperacion = fechaOperacion });
+            }
+            respuesta = true;
+        } catch(Exception ex) {
+            _logger.LogError($"Error metodo MigrarHistorialCupon() - {ex.Message}");
         }
         return respuesta;
     }

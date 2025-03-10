@@ -28,5 +28,9 @@ public static class DependencyInjection {
         services.AddScoped<ISorteoRepository, SorteoRepository>();
         services.AddScoped<IClientePuntoRepository, ClientePuntoRepository>();
         services.AddScoped<IClientePuntoFechasRepository, ClientePuntoFechasRepository>();
+        services.AddScoped<IHistorialCuponRepository, HistorialCuponRepository>();
+        services.AddScoped<IClienteJugadaRepository, ClienteJugadaRepository>();
+        services.AddScoped<ISorteoConfiguracionRepository,SorteoConfiguracionRepository>();
+        services.AddScoped<IMaquinasConfiguracionRepository, MaquinasConfiguracionRepository>();
     }
 }

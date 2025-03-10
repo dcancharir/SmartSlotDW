@@ -20,4 +20,8 @@ public interface IUnitOfWork
     ISorteoRepository _sorteoRepository { get; }
     IClientePuntoRepository _clientePuntoRepository { get; }
     IClientePuntoFechasRepository _clientePuntoFechasRepository {  get; }
+    IHistorialCuponRepository _historialCuponRepository { get; }
+    IClienteJugadaRepository _clienteJugadaRepository { get; }
+    ISorteoConfiguracionRepository _sorteoConfiguracionRepository { get; }
+    IMaquinasConfiguracionRepository _maquinasConfiguracionRepository { get; }
 }
