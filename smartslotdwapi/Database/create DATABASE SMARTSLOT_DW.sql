@@ -162,10 +162,10 @@ create table ClienteCategoria(
 	create table Sorteo(
 		codsala int not null,
 		id int not null,
+		nombre varchar(250),
 		descripcion varchar(250) null,
 		fechaInicioSorteo datetime null,
 		fechaFinSorteo datetime null,
-		sorteovirtual int null,
 		estado varchar(250) null,
 		tipo varchar(250) null,
 		fecharegistrodw datetime,
@@ -196,16 +196,61 @@ create table ClienteCategoria(
 		constraint PK_ClientePuntoFechas primary key (codsala,fechacorta,clienteid)
 	)
 	go
-	Create table ClienteCuponHistorial(
+	Create table HistorialCupon(
 		iddw int identity(1,1) not null,
+		fechadw date not null,
 		codsala int not null,
 		clienteid int not null,
 		cliente varchar(250),
 		sorteoid int,
 		nombreSorteo varchar(250),
 		fecha datetime,
-		tipocupon varchar(250),
+		tipoCupon varchar(250),
 		cupones int,
 		estadoSorteo varchar(250),
 		constraint PK_ClienteCuponHistorial primary key (iddw)
+	)
+	go
+	create table ClienteJugada(
+		iddw int identity(1,1) not null,
+		codsala int not null,
+		fechadw date not null,
+		clienteid int not null,
+		maquina varchar(250),
+		fecha datetime,
+		clientejugadaMaquinaBgId bigint,
+		clientejugadamaquinabgmodelo varchar(250),
+		clientejugadamaquinabgjuego varchar(250),
+		clintejugadamaquinabgserie varchar(250),
+		clientejugadamaquinabgtotalpuntos int,
+		clientejugadamaquinabgresiduo float,
+		clientejugadamaquinabgjugadas_calculadas varchar(250),
+		clientejugadacuponsorteoid int,
+		clientejugadacuponcupones int,
+		clientejugadacuponresiduo float
+		constraint PK_ClienteJugada primary key (iddw)
+	)
+	go
+	create table SorteoConfiguracion(
+		codsala int,
+		sorteoconfiguracionid int,
+		sorteoid int,
+		nombre varchar(250),
+		coinin float,
+		coinout float,
+		cantidadpuntos int,
+		minimaapuesta float,
+		maximaapuesta float,
+		jackpot bit,
+		cantidadcupones int,
+		constraint PK_SorteoConfiguracion primary key(codsala,sorteoconfiguracionid)
+	)
+	go
+	create table MaquinasConfiguracion(
+		codsala int,
+		sorteoconfiguracionid int,
+		maquina varchar(250),
+		marca varchar(250),
+		tipomaquina varchar(250),
+		constraint PK_MaquinasConfiguracion primary key (codsala,sorteoconfiguracionid,maquina)
 	)
