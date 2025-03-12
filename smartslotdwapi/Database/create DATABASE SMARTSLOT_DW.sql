@@ -221,7 +221,7 @@ create table ClienteCategoria(
 		clientejugadaMaquinaBgId bigint,
 		clientejugadamaquinabgmodelo varchar(250),
 		clientejugadamaquinabgjuego varchar(250),
-		clintejugadamaquinabgserie varchar(250),
+		clientejugadamaquinabgserie varchar(250),
 		clientejugadamaquinabgtotalpuntos int,
 		clientejugadamaquinabgresiduo float,
 		clientejugadamaquinabgjugadas_calculadas varchar(250),
@@ -253,4 +253,31 @@ create table ClienteCategoria(
 		marca varchar(250),
 		tipomaquina varchar(250),
 		constraint PK_MaquinasConfiguracion primary key (codsala,sorteoconfiguracionid,maquina)
+	)
+	go
+	create table CanjeProducto(
+		iddw int identity(1,1) not null,
+		id int not null,
+		codsala int not null,
+		comprobante varchar(250),
+		tipodocumento varchar(250),
+		documento varchar(250),
+		apellidoPaterno varchar(250),
+		apellidoMaterno varchar(250),
+		nombres varchar(250),
+		categoriaCliente varchar(250),
+		puntos_canjeados int,
+		estado varchar(250),
+		fechaPedido datetime,
+		constraint PK_CanjeProducto primary key(iddw)
+	)
+	go
+	create table Pedido(
+		iddw int identity(1,1) not null,
+		canjeproductoid int,
+		codsala int not null,
+		producto varchar(250),
+		categoriaProducto varchar(250),
+		cantidad_pedida int,
+		constraint PK_Pedido primary key (iddw)
 	)

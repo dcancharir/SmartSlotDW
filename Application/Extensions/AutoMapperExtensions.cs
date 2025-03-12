@@ -34,4 +34,34 @@ public static class AutoMapperExtensions{
 
         return result;
     }
+    public static List<ClienteJugada> ToClienteJugadaList(
+     this IEnumerable<ClienteJugadaViewModel> clientejugadas,
+     IMapper mapper) {
+        var result = new List<ClienteJugada>();
+
+        foreach(var cliente in clientejugadas) {
+            var item = new ClienteJugada() { 
+                clienteid = cliente.clienteid,
+                maquina = cliente.maquina,
+                fecha = cliente.fecha,
+                clientejugadaMaquinaBGId = cliente.clientejugadaMaquinaBGId,
+                clientejugadamaquinabgmodelo = cliente.clientejugadamaquinabg.modelo,
+                clientejugadamaquinabgjuego = cliente.clientejugadamaquinabg.juego,
+                clientejugadamaquinabgserie = cliente.clientejugadamaquinabg.serie,
+                clientejugadamaquinabgtotalpuntos=cliente.clientejugadamaquinabg.totalpuntos,
+                clientejugadamaquinabgresiduo = cliente.clientejugadamaquinabg.residuo,
+                clientejugadamaquinabgjugadas_calculadas = cliente.clientejugadamaquinabg.jugadas_calculadas,
+                clientejugadacuponsorteoid = cliente.clientejugadaCupon.sorteoid,
+                clientejugadacuponcupones = cliente.clientejugadaCupon.cupones,
+                clientejugadacuponresiduo = cliente.clientejugadaCupon.residuo
+            };
+            //var clienteCupones = cliente.clientejugadamaquinabg
+            //    .Select(item => mapper.Map<ClienteCupon>((cliente, item)))
+            //    .ToList();
+
+            result.Add(item);
+        }
+
+        return result;
+    }
 }

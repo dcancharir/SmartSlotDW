@@ -20,6 +20,6 @@ public class ClienteJugadaProfile : Profile{
          .ForMember(dest => dest.clientejugadamaquinabgjugadas_calculadas, opt => opt.MapFrom(src => src.maquinabg.jugadas_calculadas))
          .ForMember(dest => dest.clientejugadacuponsorteoid, opt => opt.MapFrom(src => src.jugadacupon.sorteoid))
          .ForMember(dest => dest.clientejugadacuponcupones, opt => opt.MapFrom(src => src.jugadacupon.cupones))
-         .ForMember(dest => dest.clientejugadamaquinabgresiduo, opt => opt.MapFrom(src => src.jugadacupon.residuo));
+         .ForMember(dest => dest.clientejugadacuponresiduo, opt => opt.MapFrom(src => src.jugadacupon.residuo));
     }
 }

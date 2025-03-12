@@ -44,6 +44,7 @@ public class CrearSorteoCommand : IRequest<bool> {
                             if(resultSorteconfiguracion == true && sorteoconfiguracion.maquinasconfiguracion.Count > 0) {
                                 sorteoconfiguracion.maquinasconfiguracion.ForEach(x => {
                                     x.codsala = request.codsala;
+                                    x.sorteoconfiguracionid = sorteoconfiguracion.sorteoconfiguracionid;
                                 });
                                 var resultMaquinasConfiguracion = await _unitOfWork._maquinasConfiguracionRepository.BulkCreateMaquinasConfiguracion(sorteoconfiguracion.maquinasconfiguracion);
                             }

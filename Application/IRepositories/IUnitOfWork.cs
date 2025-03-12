@@ -24,4 +24,6 @@ public interface IUnitOfWork
     IClienteJugadaRepository _clienteJugadaRepository { get; }
     ISorteoConfiguracionRepository _sorteoConfiguracionRepository { get; }
     IMaquinasConfiguracionRepository _maquinasConfiguracionRepository { get; }
+    ICanjeProductoRepository _canjeProductoRepository { get; }
+    IPedidoRepository _pedidoRepository { get; }
 }

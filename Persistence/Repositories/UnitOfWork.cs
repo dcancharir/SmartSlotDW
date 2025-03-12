@@ -24,7 +24,9 @@ public class UnitOfWork : IUnitOfWork {
         IHistorialCuponRepository historialCuponRepository,
         IClienteJugadaRepository clienteJugadaRepository,
         ISorteoConfiguracionRepository sorteoConfiguracionRepository,
-        IMaquinasConfiguracionRepository maquinasConfiguracionRepository)
+        IMaquinasConfiguracionRepository maquinasConfiguracionRepository,
+        ICanjeProductoRepository canjeProductoRepository,
+        IPedidoRepository pedidoRepository)
     {
         _clienteRepository = clienteRepository;
         _salaRepository = salaRepository;
@@ -43,6 +45,8 @@ public class UnitOfWork : IUnitOfWork {
         _clienteJugadaRepository = clienteJugadaRepository;
         _sorteoConfiguracionRepository = sorteoConfiguracionRepository;
         _maquinasConfiguracionRepository = maquinasConfiguracionRepository;
+        _canjeProductoRepository = canjeProductoRepository;
+        _pedidoRepository = pedidoRepository;
     }
     public IClienteRepository _clienteRepository { get; }
     public ISalaRepository _salaRepository { get; }
@@ -64,4 +68,6 @@ public class UnitOfWork : IUnitOfWork {
     public ISorteoConfiguracionRepository _sorteoConfiguracionRepository { get; }
 
     public IMaquinasConfiguracionRepository _maquinasConfiguracionRepository { get; }
+    public ICanjeProductoRepository _canjeProductoRepository { get; }
+    public IPedidoRepository _pedidoRepository { get; }
 }

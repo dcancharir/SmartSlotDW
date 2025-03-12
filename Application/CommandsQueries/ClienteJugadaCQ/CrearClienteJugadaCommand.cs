@@ -1,4 +1,5 @@
-﻿using Application.IRepositories;
+﻿using Application.Extensions;
+using Application.IRepositories;
 using Application.ViewModels;
 using AutoMapper;
 using Domain;
@@ -10,8 +11,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.CommandsQueries.ClienteJugadaCQ;
-internal class CrearClienteJugadaCommand : IRequest<bool> {
-    public LinkedList<ClienteJugadaViewModel> registro {  get; set; }
+public class CrearClienteJugadaCommand : IRequest<bool> {
+    public List<ClienteJugadaViewModel> registro {  get; set; }
     public int codsala { get; set; }
     public DateTime fechaOperacion { get; set; }
     public class CrearClienteJugadaCommandHandler : IRequestHandler<CrearClienteJugadaCommand, bool> {
@@ -28,7 +29,7 @@ internal class CrearClienteJugadaCommand : IRequest<bool> {
                 return response;
             }
             try {
-                List<ClienteJugada> registros = _mapper.Map<List<ClienteJugada>>(request.registro);
+                List<ClienteJugada> registros = request.registro.ToClienteJugadaList(_mapper);
                 registros.ForEach(registro => { 
                     registro.codsala = request.codsala;
                     registro.fechadw = request.fechaOperacion.Date;

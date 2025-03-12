@@ -56,7 +56,7 @@ public class ClienteJugadaRepository : IClienteJugadaRepository {
             bulkCopy.ColumnMappings.Add("clientejugadaMaquinaBgId", "clientejugadaMaquinaBgId");
             bulkCopy.ColumnMappings.Add("clientejugadamaquinabgmodelo", "clientejugadamaquinabgmodelo");
             bulkCopy.ColumnMappings.Add("clientejugadamaquinabgjuego", "clientejugadamaquinabgjuego");
-            bulkCopy.ColumnMappings.Add("clintejugadamaquinabgserie", "clintejugadamaquinabgserie");
+            bulkCopy.ColumnMappings.Add("clientejugadamaquinabgserie", "clientejugadamaquinabgserie");
             bulkCopy.ColumnMappings.Add("clientejugadamaquinabgtotalpuntos", "clientejugadamaquinabgtotalpuntos");
             bulkCopy.ColumnMappings.Add("clientejugadamaquinabgresiduo", "clientejugadamaquinabgresiduo");
             bulkCopy.ColumnMappings.Add("clientejugadamaquinabgjugadas_calculadas", "clientejugadamaquinabgjugadas_calculadas");
