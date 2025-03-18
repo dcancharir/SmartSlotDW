@@ -26,4 +26,5 @@ public interface IUnitOfWork
     IMaquinasConfiguracionRepository _maquinasConfiguracionRepository { get; }
     ICanjeProductoRepository _canjeProductoRepository { get; }
     IPedidoRepository _pedidoRepository { get; }
+    IHistorialMigracionDWRepository _historialMigracionDWRepository { get; }
 }

@@ -34,5 +34,6 @@ public static class DependencyInjection {
         services.AddScoped<IMaquinasConfiguracionRepository, MaquinasConfiguracionRepository>();
         services.AddScoped<ICanjeProductoRepository, CanjeProductoRepository>();
         services.AddScoped<IPedidoRepository, PedidoRepository>();
+        services.AddScoped<IHistorialMigracionDWRepository, HistorialMigracionDWRepository>();
     }
 }

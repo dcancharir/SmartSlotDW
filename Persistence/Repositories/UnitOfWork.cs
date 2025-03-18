@@ -7,6 +7,31 @@ using System.Threading.Tasks;
 
 namespace Persistence.Repositories;
 public class UnitOfWork : IUnitOfWork {
+    public IClienteRepository _clienteRepository { get; }
+    public ISalaRepository _salaRepository { get; }
+    public IClienteCategoriaRepository _clienteCategoriaRepository { get; }
+    public IClienteCuponRepository _clienteCuponRepository { get; }
+    public IClientePromocionRepository _clientePromocionRepository { get; }
+    public IAfluenciaHoraRepository _afluenciaHoraRepository { get; }
+    public IStatusPlayerRepository _statusPlayerRepository { get; }
+    public IStatusMaquinaCuponRepository _statusMaquinaCuponRepository { get; }
+    public IPromocionRepository _promocionRepository { get; }
+    public ISegmentacionClienteRepository _segmentacionClienteRepository { get; }
+    public ISorteoRepository _sorteoRepository { get; }
+    public IClientePuntoRepository _clientePuntoRepository { get; }
+    public IClientePuntoFechasRepository _clientePuntoFechasRepository { get; }
+    public IHistorialCuponRepository _historialCuponRepository { get; }
+
+    public IClienteJugadaRepository _clienteJugadaRepository { get; }
+
+    public ISorteoConfiguracionRepository _sorteoConfiguracionRepository { get; }
+
+    public IMaquinasConfiguracionRepository _maquinasConfiguracionRepository { get; }
+    public ICanjeProductoRepository _canjeProductoRepository { get; }
+    public IPedidoRepository _pedidoRepository { get; }
+
+    public IHistorialMigracionDWRepository _historialMigracionDWRepository { get; }
+
     public UnitOfWork(
         IClienteRepository clienteRepository,
         ISalaRepository salaRepository,
@@ -26,7 +51,9 @@ public class UnitOfWork : IUnitOfWork {
         ISorteoConfiguracionRepository sorteoConfiguracionRepository,
         IMaquinasConfiguracionRepository maquinasConfiguracionRepository,
         ICanjeProductoRepository canjeProductoRepository,
-        IPedidoRepository pedidoRepository)
+        IPedidoRepository pedidoRepository,
+        IHistorialMigracionDWRepository historialMigracionDW
+    )
     {
         _clienteRepository = clienteRepository;
         _salaRepository = salaRepository;
@@ -47,27 +74,7 @@ public class UnitOfWork : IUnitOfWork {
         _maquinasConfiguracionRepository = maquinasConfiguracionRepository;
         _canjeProductoRepository = canjeProductoRepository;
         _pedidoRepository = pedidoRepository;
+        _historialMigracionDWRepository = historialMigracionDW;
     }
-    public IClienteRepository _clienteRepository { get; }
-    public ISalaRepository _salaRepository { get; }
-    public IClienteCategoriaRepository _clienteCategoriaRepository { get; }
-    public IClienteCuponRepository _clienteCuponRepository { get; }
-    public IClientePromocionRepository _clientePromocionRepository { get; }
-    public IAfluenciaHoraRepository _afluenciaHoraRepository { get; }
-    public IStatusPlayerRepository _statusPlayerRepository{ get; }
-    public IStatusMaquinaCuponRepository _statusMaquinaCuponRepository { get; }
-    public IPromocionRepository _promocionRepository { get; }
-    public ISegmentacionClienteRepository _segmentacionClienteRepository { get; }
-    public ISorteoRepository _sorteoRepository { get; }
-    public IClientePuntoRepository _clientePuntoRepository { get; }
-    public IClientePuntoFechasRepository _clientePuntoFechasRepository { get; }
-    public IHistorialCuponRepository _historialCuponRepository { get; }
 
-    public IClienteJugadaRepository _clienteJugadaRepository { get; }
-
-    public ISorteoConfiguracionRepository _sorteoConfiguracionRepository { get; }
-
-    public IMaquinasConfiguracionRepository _maquinasConfiguracionRepository { get; }
-    public ICanjeProductoRepository _canjeProductoRepository { get; }
-    public IPedidoRepository _pedidoRepository { get; }
 }
