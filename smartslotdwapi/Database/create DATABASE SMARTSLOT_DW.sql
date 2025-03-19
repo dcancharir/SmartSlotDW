@@ -281,3 +281,10 @@ create table ClienteCategoria(
 		cantidad_pedida int,
 		constraint PK_Pedido primary key (iddw)
 	)
+	go
+	create table HistorialMigracionDW(
+		fechamigracion date not null,
+		iniciado int,
+		terminado int,
+		constraint PK_HistorialMigracion primary key(fechamigracion)
+	)

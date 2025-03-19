@@ -35,13 +35,37 @@ builder.Host.ConfigureLogging(logging => {
 var logger = builder.Services.BuildServiceProvider().GetRequiredService<ILogger<Program>>();
 /*Quartz*/
 builder.Services.AddQuartz(q => {
-    //base Quartz scheduler, job and trigger configurations
-    if (true) {
-        JobKey key = new JobKey("SmartSlotApiJob");
-        q.AddJob<SmartSlotApiJob>(jobConfig => jobConfig.WithIdentity(key));
+    ////base Quartz scheduler, job and trigger configurations
+    //if (true) {
+    //    JobKey key = new JobKey("SmartSlotApiJob");
+    //    q.AddJob<SmartSlotApiJob>(jobConfig => jobConfig.WithIdentity(key));
+    //    q.AddTrigger(opts => opts
+    //            .ForJob(key)
+    //            .WithIdentity("SmartSlotApiJob-trigger")
+    //            .WithSimpleSchedule(x => x
+    //                .WithIntervalInHours(1)
+    //                .RepeatForever().Build())
+    //            .StartNow()
+    //    );
+    //}
+    //if(true) {
+    //    JobKey key = new JobKey("CreateFechaHistorialMigracionJob");
+    //    q.AddJob<CreateFechaHistorialMigracionJob>(jobConfig => jobConfig.WithIdentity(key));
+    //    q.AddTrigger(opts => opts
+    //            .ForJob(key)
+    //            .WithIdentity("CreateFechaHistorialMigracionJob-trigger")
+    //            .WithSimpleSchedule(x => x
+    //                .WithIntervalInHours(1)
+    //                .RepeatForever().Build())
+    //            .StartNow()
+    //    );
+    //}
+    if(true) {
+        JobKey key = new JobKey("MigracionSinFechas");
+        q.AddJob<MigracionSinFechas>(jobConfig => jobConfig.WithIdentity(key));
         q.AddTrigger(opts => opts
                 .ForJob(key)
-                .WithIdentity("SmartSlotApiJob-trigger")
+                .WithIdentity("MigracionSinFechas-trigger")
                 .WithSimpleSchedule(x => x
                     .WithIntervalInHours(1)
                     .RepeatForever().Build())

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.CommandsQueries.HistorialMigracionDWCQ;
 public class CrearHistorialMigracionDWCommand : IRequest<bool> {
-    public HistorialMigracionDWViewModel registro {  get; set; }
+    public List<HistorialMigracionDWViewModel> registro {  get; set; }
     public class CrearHistorialMigracionDWCommandHandler : IRequestHandler<CrearHistorialMigracionDWCommand,bool>{
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -26,9 +26,15 @@ public class CrearHistorialMigracionDWCommand : IRequest<bool> {
                 return response;
             }
             try {
-                HistorialMigracionDW model = _mapper.Map<HistorialMigracionDW>(request.registro);
-                var result = await _unitOfWork._historialMigracionDWRepository.CreateHistorial(model);
-                return result;
+                List<HistorialMigracionDW> models = _mapper.Map<List<HistorialMigracionDW>>(request.registro);
+                foreach(var model in models) {
+                    try {
+                        var result = await _unitOfWork._historialMigracionDWRepository.CreateHistorial(model);
+
+                    } catch(Exception) {
+                    }
+                }
+                return true;
             } catch(Exception) {
                 response = false;
             }

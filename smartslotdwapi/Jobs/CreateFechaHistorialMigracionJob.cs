@@ -16,23 +16,38 @@ public class CreateFechaHistorialMigracionJob : IJob {
             var _mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
             var _logger = scope.ServiceProvider.GetRequiredService<ILogger<CreateFechaHistorialMigracionJob>>();
             var _configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-            IConfigurationSection configurationSection = _configuration.GetSection("Variables");
+            
+            string fechaBaseStr = _configuration["FechaBase"] ?? string.Empty;
+            DateTime? fechaBase = ConvertirFecha(fechaBaseStr);
 
-            string fechaBase = configurationSection.GetValue<string>("FechaBase")??"";
-            _logger.LogInformation("Inicio Job para creacion de dia de migracion");
             var fechaActual = DateTime.Now;
             //si estamos 18, deberia migrar data del dia 17, ya que la del 18 aun no esta completa 
-            var fechaOperacion = fechaActual.AddDays(1);
-            var existeFechaOperacion = _mediator.Send(new GetByFechaHistorialMigracionDWQuery() { fecha = fechaOperacion });
-            if(existeFechaOperacion.Result != null && existeFechaOperacion.Result.id > 0) {
-                var nuevaFechaHistorial = new HistorialMigracionDWViewModel() { 
-                    fechamigracion = fechaOperacion,
-                    terminado = 0,
-                    iniciado = 0
-                };
-                var fechaCreada = _mediator.Send(new CrearHistorialMigracionDWCommand() { registro = nuevaFechaHistorial });
+            var fechaOperacion = fechaActual.AddDays(-1);
+            List<HistorialMigracionDWViewModel> listaInsertar;
+            var existeFechaOperacion = _mediator.Send(new GetLastRecordHistorialMigracionDWCommand() { });
+            if(existeFechaOperacion.Result != null) {
+                fechaBase = existeFechaOperacion.Result.fechamigracion;
+                listaInsertar = ObtenerListadoFechas(Convert.ToDateTime(fechaBase).AddDays(1), fechaOperacion);
+
+            } else {
+                listaInsertar = ObtenerListadoFechas(Convert.ToDateTime(fechaBase), fechaOperacion);
             }
+
+            var fechasCreadas = await _mediator.Send(new CrearHistorialMigracionDWCommand() { registro = listaInsertar });
         }
+    }
+    public List<HistorialMigracionDWViewModel> ObtenerListadoFechas(DateTime fechaInicial,DateTime fechaFinal) {
+        List<HistorialMigracionDWViewModel> fechas = new List<HistorialMigracionDWViewModel>();
+        DateTime fechaActual = fechaInicial;
+        while(fechaActual <= fechaFinal) {
+            fechas.Add(new HistorialMigracionDWViewModel { 
+                fechamigracion = fechaActual,
+                iniciado = 0,
+                terminado = 0
+            });
+            fechaActual = fechaActual.AddDays(1);
+        }
+        return fechas;
     }
     public DateTime? ConvertirFecha(string fecha) {
         if(string.IsNullOrEmpty(fecha)) return null;

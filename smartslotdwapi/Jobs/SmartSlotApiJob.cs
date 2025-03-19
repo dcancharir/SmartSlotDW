@@ -45,30 +45,23 @@ public class SmartSlotApiJob : IJob {
                     uri = uri.Trim().Substring(0, uri.Length - 1);
                     sala.uri = uri;
                 }
-                //_logger.LogInformation("Metodo MigrarClientes()");
-                //await MigrarClientes(_mediator, _logger, sala);
+      
                 //_logger.LogInformation("Obteniendo lista de clientes");
                 //var clientes = await _mediator.Send(new ListarClientesQuery() { codsala = sala.codsala });
-                //_logger.LogInformation($"Metodo MigrarSorteo()");
-                //await MigrarSorteo(_mediator, _logger, sala);
+          
                 //_logger.LogInformation("Obteniendo lista de sorteos");
                 //var sorteos = await _mediator.Send(new ListarSorteosQuery() { codsala = sala.codsala });
                 //sorteos = sorteos.Where(x => x.estado == "Vigente");
                 
-                //_logger.LogInformation("Metodo MigrarClienteCategoria()");
-                //await MigrarClienteCategoria(_mediator, _logger, sala);
+             
                 //_logger.LogInformation("Metodo MigrarClienteCupon()");
                 //await MigrarClienteCupon(_mediator, _logger, sala);
-                //_logger.LogInformation("Metodo MigrarClientePromocion()");
-                //await MigrarClientePromocion(_mediator, _logger, sala);
+            
                 //_logger.LogInformation($"Metodo MigrarAfluenciaHora()");
                 //await MigrarAfluenciaHora(_mediator, _logger, sala);
                 //_logger.LogInformation($"Metodo MigrarStatusPlayer()");
                 //await MigrarStatusPlayer(_mediator, _logger, sala);
-                //_logger.LogInformation($"Metodo MigrarPromocion()");
-                //await MigrarPromocion(_mediator, _logger, sala);
-                //_logger.LogInformation($"Metodo MigrarSegmentacionCliente()");
-                //await MigrarSegmentacionCliente(_mediator, _logger, sala);
+           
 
                 //_logger.LogInformation($"Metodo MigrarClientePunto");
                 //await MigrarClientePunto(_mediator, _logger, sala);
@@ -84,32 +77,8 @@ public class SmartSlotApiJob : IJob {
             _logger.LogInformation("Job Finalizado");
         }
     }
-    private static async Task<bool> MigrarClientes(IMediator _mediator,ILogger<SmartSlotApiJob> _logger, SalaViewModel sala) {
-        bool respuesta = false;
-        try {
-            var api = new SmartSlotApi<ClienteViewModel>();
-            var clientes = api.GetHttpGet($"{sala.uri}/api/Cliente");
-            var data = await _mediator.Send(new CrearClienteCommand() { registro = clientes, codsala = sala.codsala });
-            respuesta = true;
-        }
-        catch (Exception ex) {
-            _logger.LogError($"Error metodo MigrarClientes() - {ex.Message}");
-        }
-        return respuesta;
-    }
-    private static async Task<bool> MigrarClienteCategoria(IMediator _mediator, ILogger<SmartSlotApiJob> _logger, SalaViewModel sala) {
-        bool respuesta = false;
-        try {
-            var api = new SmartSlotApi<ClienteCategoriaViewModel>();
-            var apiresult = api.GetHttpGet($"{sala.uri}/api/ClienteCategoria");
-            var data = await _mediator.Send(new CrearClienteCategoriaCommand() { registro = apiresult, codsala = sala.codsala });
-            respuesta = true;
-        }
-        catch (Exception ex) {
-            _logger.LogError($"Error metodo MigrarClienteCategoria() - {ex.Message}");
-        }
-        return respuesta;
-    }
+   
+   
     private static async Task<bool> MigrarClienteCupon(IMediator _mediator, ILogger<SmartSlotApiJob> _logger, SalaViewModel sala) {
         bool respuesta = false;
         try {
@@ -127,19 +96,7 @@ public class SmartSlotApiJob : IJob {
         }
         return respuesta;
     }
-    private static async Task<bool> MigrarClientePromocion(IMediator _mediator, ILogger<SmartSlotApiJob> _logger, SalaViewModel sala) {
-        bool respuesta = false;
-        try {
-            var api = new SmartSlotApi<ClientePromocionViewModel>();
-            var apiresult = api.GetHttpGet($"{sala.uri}/api/ClientePromocion");
-            var data = await _mediator.Send(new CrearClientePromocionCommand() { registro = apiresult, codsala = sala.codsala });
-            respuesta = true;
-        }
-        catch (Exception ex) {
-            _logger.LogError($"Error metodo MigrarClientePromocion() - {ex.Message}");
-        }
-        return respuesta;
-    }
+  
     private static async Task<bool> MigrarAfluenciaHora(IMediator _mediator, ILogger<SmartSlotApiJob> _logger, SalaViewModel sala)
     {
         bool respuesta = false;
@@ -175,50 +132,8 @@ public class SmartSlotApiJob : IJob {
         }
         return respuesta;
     }
-    private static async Task<bool> MigrarPromocion(IMediator _mediator, ILogger<SmartSlotApiJob> _logger, SalaViewModel sala)
-    {
-        bool respuesta = false;
-        try
-        {
-            var api = new SmartSlotApi<PromocionViewModel>();
-            var apiresult = api.GetHttpGet($"{sala.uri}/api/Promocion");
-            var data = await _mediator.Send(new PromocionCommand() { registro = apiresult, codsala = sala.codsala });
-            respuesta = true;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError($"Error metodo MigrarPromocion() - {ex.Message}");
-        }
-        return respuesta;
-    }
-    private static async Task<bool> MigrarSegmentacionCliente(IMediator _mediator, ILogger<SmartSlotApiJob> _logger, SalaViewModel sala)
-    {
-        bool respuesta = false;
-        try
-        {
-            var api = new SmartSlotApi<SegmentacionClienteViewModel>();
-            var apiresult = api.GetHttpGet($"{sala.uri}/api/SegmentacionCliente");
-            var data = await _mediator.Send(new SegmentacionClienteCommand() { registro = apiresult, codsala = sala.codsala });
-            respuesta = true;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError($"Error metodo MigrarSegmentacionCliente() - {ex.Message}");
-        }
-        return respuesta;
-    }
-    private static async Task<bool> MigrarSorteo(IMediator _mediator,ILogger<SmartSlotApiJob> _logger, SalaViewModel sala) {
-        bool respuesta = false;
-        try {
-            var api = new SmartSlotApi<SorteoViewModel>();
-            var apiresult = api.GetHttpGet($"{sala.uri}/api/Sorteo");
-            var data = await _mediator.Send(new CrearSorteoCommand() { registro = apiresult, codsala = sala.codsala });
-            respuesta = true;
-        } catch(Exception ex) {
-            _logger.LogError($"Error metodo MigrarSorteo() - {ex.Message}");
-        }
-        return respuesta;
-    }
+   
+    
     private static async Task<bool> MigrarClientePunto(IMediator _mediator, ILogger<SmartSlotApiJob> _logger, SalaViewModel sala) {
         bool respuesta = false;
         try {
