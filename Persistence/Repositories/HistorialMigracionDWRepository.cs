@@ -75,4 +75,15 @@ order by fechamigracion desc
 ";
         return await db.QueryFirstOrDefaultAsync<HistorialMigracionDW?>(sql);
     }
+    public async Task<IEnumerable<HistorialMigracionDW>> GetDiasFaltantesMigracion() {
+        var db = _context.CreateSmartSlotConnection();
+        var sql = $@"
+SELECT [fechamigracion]
+      ,[iniciado]
+      ,[terminado]
+  FROM [dbo].[HistorialMigracionDW] where inciado and terminado = 0
+order by fechamigracion asc
+";
+        return await db.QueryAsync<HistorialMigracionDW>(sql);
+    }
 }

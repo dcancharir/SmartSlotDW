@@ -12,4 +12,5 @@ public interface IHistorialMigracionDWRepository {
     public Task<bool> UpdateTermino(DateTime fecha);
     public Task<bool> CreateHistorial(HistorialMigracionDW model);
     public Task<HistorialMigracionDW?> GetLastRecord();
+    public Task<IEnumerable<HistorialMigracionDW>> GetDiasFaltantesMigracion();
 }

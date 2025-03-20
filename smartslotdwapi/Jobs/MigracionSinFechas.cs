@@ -1,10 +1,13 @@
 ﻿using Application.CommandsQueries.ClienteCategoriaCQ;
 using Application.CommandsQueries.ClienteCQ;
+using Application.CommandsQueries.ClienteCuponCQ;
 using Application.CommandsQueries.ClientePromocionCQ;
+using Application.CommandsQueries.ClientePuntoCQ;
 using Application.CommandsQueries.PromocionCQ;
 using Application.CommandsQueries.SalaCQ;
 using Application.CommandsQueries.SegmentacionClienteCQ;
 using Application.CommandsQueries.SorteoCQ;
+using Application.CommandsQueries.StatusPlayerCQ;
 using Application.ViewModels;
 using MediatR;
 using Quartz;
@@ -45,6 +48,15 @@ public class MigracionSinFechas : IJob {
                 await MigrarSegmentacionCliente(_mediator, _logger, sala);
                 _logger.LogInformation($"Metodo MigrarPromocion()");
                 await MigrarPromocion(_mediator, _logger, sala);
+                _logger.LogInformation($"Metodo MigrarStatusPlayer()");
+                await MigrarStatusPlayer(_mediator, _logger, sala);
+
+                var listaClientes = await _mediator.Send(new ListarClientesQuery() { });
+                _logger.LogInformation("Metodo MigrarClienteCupon()");
+                await MigrarClienteCupon(_mediator, _logger, sala,listaClientes);
+                _logger.LogInformation($"Metodo MigrarClientePunto");
+                await MigrarClientePunto(_mediator, _logger, sala,listaClientes);
+
             }
             _logger.LogInformation($"Finalizado Job MigracionSinFechas");
         }
@@ -121,5 +133,46 @@ public class MigracionSinFechas : IJob {
         }
         return respuesta;
     }
+    private static async Task<bool> MigrarStatusPlayer(IMediator _mediator, ILogger<MigracionSinFechas> _logger, SalaViewModel sala) {
+        bool respuesta = false;
+        try {
+            var api = new SmartSlotApi<StatusPlayerViewModel>();
+            var apiresult = api.GetHttpGet($"{sala.uri}/api/StatusPlayer");
+            var data = await _mediator.Send(new StatusPlayerCommand() { registro = apiresult, codsala = sala.codsala });
+            respuesta = true;
+        } catch(Exception ex) {
+            _logger.LogError($"Error metodo MigrarStatusPlayer() - {ex.Message}");
+        }
+        return respuesta;
+    }
+    private static async Task<bool> MigrarClienteCupon(IMediator _mediator, ILogger<MigracionSinFechas> _logger, SalaViewModel sala,IEnumerable<ClienteViewModel> clientes) {
+        bool respuesta = false;
+        try {
 
+            foreach(var item in clientes) {
+                var api = new SmartSlotApi<ClienteCuponViewModel>();
+                var apiresult = api.GetHttpGet($"{sala.uri}/api/ClienteCupon/cliente/{item.id}");
+                var data = await _mediator.Send(new CrearClienteCuponCommand() { registro = apiresult, codsala = sala.codsala });
+            }
+            respuesta = true;
+        } catch(Exception ex) {
+            _logger.LogError($"Error metodo MigrarClienteCupon() - {ex.Message}");
+        }
+        return respuesta;
+    }
+  
+    private static async Task<bool> MigrarClientePunto(IMediator _mediator, ILogger<MigracionSinFechas> _logger, SalaViewModel sala,IEnumerable<ClienteViewModel> clientes) {
+        bool respuesta = false;
+        try {
+            foreach(var item in clientes) {
+                var api = new SmartSlotApi<ClientePuntoViewModel>();
+                var apiresult = api.GetHttpGet($"{sala.uri}/api/ClientePunto/cliente/{item.id}");
+                var data = await _mediator.Send(new CrearClientePuntoCommand() { registro = apiresult, codsala = sala.codsala });
+            }
+            respuesta = true;
+        } catch(Exception ex) {
+            _logger.LogError($"Error metodo MigrarClienteCupon() - {ex.Message}");
+        }
+        return respuesta;
+    }
 }
